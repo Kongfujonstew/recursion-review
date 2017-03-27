@@ -3,64 +3,57 @@
 
 // but you don't so you're going to write it from scratch:
 
-var stringifyJSON = function(obj) {
-  // your code goes here
-
-  // declare a return variable, which is a empty string
-  var result = '';
-
-  // declare a recurse function
-  var recurse = function(item){
-  	// if it's an object
-  	if (Array.isArray(item)){
-  		if(item.length === 0){
-  			result += '[]';
-  		}
-  		else{
-	  		result += '[';
-	  		// use a for loop to interate through every item of the array until length -2
-	  		for(var i = 0; i< item.length - 1; i++){
-	  			// result string += stringifyJSON(obj[i]) + ', ';
-	  			result += recurse(item[i]) + ', '
-	  		}
-	  		//result += stringifyJSON(item[item.length-1]) + ']';
-	  		//add the last item in the array to result array (ob.length-1) + ']';
-  		}
-  	}	
-
-  	if (typeof item === 'object'){
-  		result += '{';
-  		// use for loop to interate through every key and property of the object
-  		for (var key in item){
-  		// result string += '{"' + key + '":' + recurse(object[key]) + '"}';
-  			result += key + ':' + recurse(item[key]) + ',';
-  		}
-  		result += '}';
-  	}
-
+var stringifyJSON = function(obj) {  	
   	// if it's an array
+	if (Array.isArray(obj)) {
+		if (obj.length === 0) {
+			return '[]';
+		}
+		else {
+  		var result = '[';
+  		// use a for loop to interate through every item of the array until length -2
+  		for (var i = 0; i < obj.length - 1; i++) {
+  			// result string += stringifyJSON(obj[i]) + ', ';
+  			result += stringifyJSON(obj[i]) + ', '
+  		}
+
+  		return result + obj[obj.length - 1] + ']';
+  		//result += stringifyJSON(item[item.length-1]) + ']';
+  		//add the last item in the array to result array (ob.length-1) + ']';
+		}
+	};
+	// if it's an object
+	// if (typeof item === 'object'){
+	// 	result += '{';
+	// 	// use for loop to interate through every key and property of the object
+	// 	for (var key in item){
+	// 	// result string += '{"' + key + '":' + recurse(object[key]) + '"}';
+	// 		result += key + ':' + stringifyJSON(item[key]) + ',';
+	// 	}
+	// 	result += '}';
+	// }
+
+  	
 
 
   	// if obj is string
-  	if (typeof item === 'string'){
-  		result += '"' + item + '"';
-  	}
-		//if obj is null
-		if (item === null){
-			result += 'null';
-		}
+	if (typeof obj === 'string'){
+		return '"' + item + '"';
+	}
+	//if obj is null
+	if (obj === null){
+		return 'null';
+	}
 
-		//else result string += obj;
-		else {
-			result += item;
-		}
-  }
+	//else result string += obj;
+	else {
+		return '' + stringifyJSON(obj);
+	}
+
 
 
   //recurse(obj)
-  recurse(obj);
   // return the result string
-  return result;
 };
 
 
