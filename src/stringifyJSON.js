@@ -28,22 +28,40 @@ var stringifyJSON = function(obj) {
 		}
 	};
 	// if it's an object
-	if (typeof obj === 'object'){
+	if (typeof obj === 'object' ){
 		var resultArr = [];
+    var result ='';
 
 		// use for loop to interate through every key and property of the object
 		for (var key in obj){
 		// result string += '{"' + key + '":' + recurse(object[key]) + '"}';
+      if(typeof obj[key] === 'function'){
+        result ='{}';
+      }
+      else if(obj[key] === undefined){
+        continue;
+      }
+      else{
 			resultArr.push('"' + key + '":' + stringifyJSON(obj[key])); 
 			//result += '"' + key + '":' + stringifyJSON(obj[key]) + ',';
+      }
 		}
-		return '{' + resultArr.join(",") +'}';
+		result ='{' + resultArr.join(",") +'}';
+    return result;
 	}
 
   	
+  // // if obj is undefined
+  // if (obj === undefined){
+  //   return '';
+  // }
 
+   // if obj is a function
+  if (typeof obj === 'function'){
+    return '{}';
+  }
 
-  	// if obj is string
+  // if obj is string
 	if (typeof obj === 'string'){
 		return '"' + obj + '"';
 	}
@@ -88,6 +106,15 @@ var stringifiableObjects = [
   {'a': [], 'c': {}, 'b': true}
 ];
 
+unstringifiableValues = [
+  {
+    'functions': function() {},
+    'undefined': undefined
+  }
+];
 console.log(stringifyJSON(stringifiableObjects));
+console.log(stringifyJSON(unstringifiableValues));
 console.log('--------------------------------------------------------------------------')
 console.log(JSON.stringify(stringifiableObjects));
+console.log(JSON.stringify(unstringifiableValues));
+
